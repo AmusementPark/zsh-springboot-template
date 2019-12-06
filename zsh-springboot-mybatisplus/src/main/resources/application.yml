@@ -1,0 +1,66 @@
+server:
+  port: 8080
+
+spring:
+  devtools:
+    restart:
+      enabled: false
+
+  datasource:
+# 单数据源
+#    password: aq1sw2de
+#    username: root
+#    url: jdbc:mysql://106.54.211.146:3307/warmgoal?characterEncoding=utf8&useSSL=false
+#    driver-class-name: com.mysql.jdbc.Driver
+# 多数据源
+    ds-0:
+      password: mima
+      username: root
+      jdbc-url: jdbc:mysql://106.54.211.146:3306/ds_0?characterEncoding=utf8&useSSL=false
+      driver-class-name: com.mysql.jdbc.Driver
+    ds-1:
+      password: mima
+      username: root
+      jdbc-url: jdbc:mysql://106.54.211.146:3306/ds_1?characterEncoding=utf8&useSSL=false
+      driver-class-name: com.mysql.jdbc.Driver
+
+mybatis-plus:
+# 单数据源
+#  mapper-locations: classpath:/mapper/ds_0/*Mapper.xml
+# 多数据源
+  ds-0:
+    mapper-locations: classpath:/mapper/ds_0/mapper/*Mapper.xml
+  ds-1:
+    mapper-locations: classpath:/mapper/ds_1/mapper/*Mapper.xml
+#############################################################################################
+
+#mybatis
+#mybatis-plus:
+#  mapper-locations: classpath:/mapper/*Mapper.xml
+#  #实体扫描，多个package用逗号或者分号分隔
+#  typeAliasesPackage: com.baomidou.springboot.entity
+#  typeEnumsPackage: com.baomidou.springboot.entity.enums
+#  global-config:
+#    # 数据库相关配置
+#    db-config:
+#      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+#      id-type: id_worker
+#      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+#      field-strategy: not_empty
+#      #驼峰下划线转换
+#      column-underline: true
+#      #数据库大写下划线转换
+#      #capital-mode: true
+#      #逻辑删除配置
+#      logic-delete-value: 0
+#      logic-not-delete-value: 1
+#      db-type: mysql
+#    #刷新mapper 调试神器
+#    refresh: true
+#  # 原生配置
+#  configuration:
+#    map-underscore-to-camel-case: true
+#    cache-enabled: false
+##logging
+#logging:
+#  level: warn
