@@ -11,7 +11,7 @@
     <groupId>zsh.springboot</groupId>
     <artifactId>template</artifactId>
     <version>2.2.1.RELEASE</version>
-    <name>template</name>
+    <name>zsh-springboot-template</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -24,12 +24,18 @@
 
     <modules>
         <module>zsh-springboot-mybatisplus</module>
+        <module>zsh-springboot-kafka</module>
     </modules>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

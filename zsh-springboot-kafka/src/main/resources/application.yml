@@ -1,0 +1,38 @@
+spring:
+  kafka:
+    batch: true
+    pollTimeOut: 6000
+    concurrency: 1
+    bootstrap-servers: 172.22.122.22:9092
+    #    bootstrap-servers: 10.86.74.121:9092,10.86.74.122:9092,10.86.74.123:9092
+    producer:
+      retries: 3
+      # 每次批量发送消息的数量
+      batch-size: 16384
+      buffer-memory:  33554432
+      # 指定消息key和消息体的编解码方式
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # 指定默认消费者group id
+      # 最大请求size:30M - 31457280
+      max-request-size: 1048576
+      # 支持 gzip,snappy,lz4. consumer自动支持解压,不需要配置
+      compression-type: gzip
+    consumer:
+      #      group-id: ros-consumer-group
+      auto-offset-reset:  earliest
+      enable-auto-commit: false
+      auto-commit-interval: 3000
+      max-poll-records: 50
+      # 最大取出的size: 30M 应该等同于 producer.max-request-size
+      fetch-max-bytes: 1048576
+      # 最大poll间隔;默认是 300,000 豪秒,这里改为 600,000 毫秒 = 600秒,主要是DID和DTC请求比较耗时
+      max-poll-interval-ms: 600000
+      properties:
+        max:
+          partition:
+            fetch:
+              bytes: 2097152
+      # 指定消息key和消息体的编解码方式
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
