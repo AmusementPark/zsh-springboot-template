@@ -5,12 +5,11 @@
     <parent>
         <groupId>zsh.springboot</groupId>
         <artifactId>template</artifactId>
-        <version>2.2.1.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>2.2.1-SNAPSHOT</version>
     </parent>
-    <artifactId>kafka</artifactId>
+    <artifactId>zsh-springboot-kafka</artifactId>
     <version>2.2.1-SNAPSHOT</version>
-    <name>kafka</name>
+    <name>zsh-springboot-kafka</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>

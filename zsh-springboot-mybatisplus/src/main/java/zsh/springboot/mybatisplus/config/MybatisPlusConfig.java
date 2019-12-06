@@ -22,6 +22,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -31,7 +32,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Configuration
-//@MapperScan("zsh.springboot.mybatisplus.*")//这个注解，作用相当于下面的@Bean MapperScannerConfigurer，2者配置1份即可
 public class MybatisPlusConfig {
 
     private static ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
@@ -45,13 +45,18 @@ public class MybatisPlusConfig {
         return DataSourceBuilder.create().build();
     }
 
+    @Bean(name = "ds0DataSourceTxManager")
+    public DataSourceTransactionManager ds0DataSourceTxManager(@Qualifier("ds0DataSource") DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
+    }
+
     @Bean("ds0SqlSessionFactory")
     @ConditionalOnBean(name="ds0DataSource")
     public SqlSessionFactory ds0SqlSessionFactory(@Autowired @Qualifier("ds0DataSource") DataSource dataSource) throws Exception {
         MybatisSqlSessionFactoryBean sqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
         sqlSessionFactoryBean.setMapperLocations(getResources(environment.getProperty("mybatis-plus.ds-0.mapper-locations")));
-        GlobalConfig globalConfig = new GlobalConfig();
+//        GlobalConfig globalConfig = new GlobalConfig();
 //        GlobalConfig.DbConfig dbConfig = new GlobalConfig.DbConfig().setIdType(IdType.ID_WORKER);
 //        globalConfig.setDbConfig(dbConfig);
 //        sqlSessionFactoryBean.setGlobalConfig(globalConfig);
@@ -62,6 +67,11 @@ public class MybatisPlusConfig {
     @ConfigurationProperties("spring.datasource.ds-1")
     public DataSource ds1DataSource() {
         return DataSourceBuilder.create().build();
+    }
+
+    @Bean(name = "ds1DataSourceTxManager")
+    public DataSourceTransactionManager ds1DataSourceTxManager(@Qualifier("ds1DataSource") DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
     }
 
     @Bean("ds1SqlSessionFactory")
