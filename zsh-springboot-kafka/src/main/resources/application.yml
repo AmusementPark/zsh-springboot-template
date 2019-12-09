@@ -3,20 +3,20 @@ spring:
     batch: true
     pollTimeOut: 6000
     concurrency: 1
-    bootstrap-servers: 172.22.122.22:9092
+    bootstrap-servers: 106.54.211.146:9092
     #    bootstrap-servers: 10.86.74.121:9092,10.86.74.122:9092,10.86.74.123:9092
     producer:
       retries: 3
-      # Ã¿´ÎÅúÁ¿·¢ËÍÏûÏ¢µÄÊýÁ¿
+      # Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
       batch-size: 16384
       buffer-memory:  33554432
-      # Ö¸¶¨ÏûÏ¢keyºÍÏûÏ¢ÌåµÄ±à½âÂë·½Ê½
+      # Ö¸ï¿½ï¿½ï¿½ï¿½Ï¢keyï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ë·½Ê½
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
-      # Ö¸¶¨Ä¬ÈÏÏû·ÑÕßgroup id
-      # ×î´óÇëÇósize:30M - 31457280
+      # Ö¸ï¿½ï¿½Ä¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½group id
+      # ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½size:30M - 31457280
       max-request-size: 1048576
-      # Ö§³Ö gzip,snappy,lz4. consumer×Ô¶¯Ö§³Ö½âÑ¹,²»ÐèÒªÅäÖÃ
+      # Ö§ï¿½ï¿½ gzip,snappy,lz4. consumerï¿½Ô¶ï¿½Ö§ï¿½Ö½ï¿½Ñ¹,ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½
       compression-type: gzip
     consumer:
       #      group-id: ros-consumer-group
@@ -24,15 +24,18 @@ spring:
       enable-auto-commit: false
       auto-commit-interval: 3000
       max-poll-records: 50
-      # ×î´óÈ¡³öµÄsize: 30M Ó¦¸ÃµÈÍ¬ÓÚ producer.max-request-size
+      # ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½size: 30M Ó¦ï¿½Ãµï¿½Í¬ï¿½ï¿½ producer.max-request-size
       fetch-max-bytes: 1048576
-      # ×î´ópoll¼ä¸ô;Ä¬ÈÏÊÇ 300,000 ºÀÃë,ÕâÀï¸ÄÎª 600,000 ºÁÃë = 600Ãë,Ö÷ÒªÊÇDIDºÍDTCÇëÇó±È½ÏºÄÊ±
+      # ï¿½ï¿½ï¿½pollï¿½ï¿½ï¿½;Ä¬ï¿½ï¿½ï¿½ï¿½ 300,000 ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½ï¿½ï¿½Îª 600,000 ï¿½ï¿½ï¿½ï¿½ = 600ï¿½ï¿½,ï¿½ï¿½Òªï¿½ï¿½DIDï¿½ï¿½DTCï¿½ï¿½ï¿½ï¿½È½Ïºï¿½Ê±
       max-poll-interval-ms: 600000
       properties:
         max:
           partition:
             fetch:
               bytes: 2097152
-      # Ö¸¶¨ÏûÏ¢keyºÍÏûÏ¢ÌåµÄ±à½âÂë·½Ê½
+      # Ö¸ï¿½ï¿½ï¿½ï¿½Ï¢keyï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ë·½Ê½
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#logging:
+#  level:
+#    root: debug

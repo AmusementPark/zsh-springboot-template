@@ -9,6 +9,9 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.listener.ContainerProperties;
+import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
+import org.springframework.kafka.listener.SeekToCurrentErrorHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,12 +74,12 @@ public class KafkaConsumerConfig {
         factory.getContainerProperties().setPollTimeout(pollTimeOut);
 //        factory.setBatchErrorHandler(new BatchLoggingErrorHandler());
         // 设置成手动模式
-//        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
+        factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
 
 //        configurer.configure(factory, consumerFactory());
         // 最大重试三次
 //        factory.setErrorHandler(new SeekToCurrentErrorHandler());
-//        factory.setErrorHandler(new SeekToCurrentErrorHandler(new DeadLetterPublishingRecoverer(kafkaTemplate), 3));
+        factory.setErrorHandler(new SeekToCurrentErrorHandler(new DeadLetterPublishingRecoverer(kafkaTemplate), 3));
 //        factory.setBatchErrorHandler(new SeekToCurrentBatchErrorHandler());
 
         return factory;
