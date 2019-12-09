@@ -13,4 +13,9 @@ public class CuratorConfigurationProperties {
     private int sessionTimeoutMs;
     private int connectionTimeoutMs;
     private String connectString;
+    private String distributedAtomicLongZnode;
+    private String distributedBarrierZnode;
+    private String distributedMutexZnode;
+    private String distributedMutexRwZnode;
+    private String distributedDelayQZnode;
 }

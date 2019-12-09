@@ -20,7 +20,8 @@ public class ZookeeperApplication {
 //        app.executorService = Executors.newFixedThreadPool(10);
 //        app.atomicInteger = new AtomicInteger();
 //        app.createNode_PERSISTENT_SEQUENTIAL();
-        app.readNodeContent();
+//        app.readNodeContent();
+//        app.distributedAtomicLongSequence.sequence();
     }
 
 //    @Scheduled(fixedDelay=3000)
@@ -53,7 +54,7 @@ public class ZookeeperApplication {
 //            executorService.submit(r);
 //        }
 //    }
-
+//
 //    private void tryConcurrentDistributedLock() {
 //        Runnable lock = () -> {
 ////            while (true) {
@@ -81,20 +82,7 @@ public class ZookeeperApplication {
 //    }
 
 
-//    private void interProcessMutex() throws Exception {
-//        InterProcessMutex interProcessMutex = new InterProcessMutex(curatorFramework, "/lock-path");
-//        try {
-//            interProcessMutex.acquire();
-//            // Do nothing
-//            System.out.println("TRY-LOCK");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            System.out.println("RELEASE-LOCK");
-//            interProcessMutex.release();
-//        }
-//    }
+
 
     public void createNode_PERSISTENT_SEQUENTIAL() throws Exception {
         Stat stat = curatorFramework.checkExists().forPath("/root");
@@ -133,7 +121,7 @@ public class ZookeeperApplication {
     public void readNodeContent() throws Exception {
         int nodeCount = 0;
         while (true) {
-            Thread.sleep(500);
+            Thread.sleep(200);
 //            Stat stat = curatorFramework.checkExists().forPath("/root/sequential_000000000"+nodeCount);
 //            if (stat == null) {
 //                System.out.println("EOF");

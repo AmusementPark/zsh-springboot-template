@@ -1,14 +1,19 @@
 server:
   port: 7089
   undertow:
-    #    io-threads: 4         # ÉèÖÃIOÏß³ÌÊı, ËüÖ÷ÒªÖ´ ĞĞ? ·Ç×èÈûµÄÈÎÎñ,ËüÃÇ»á¸ºÔğ¶à¸öÁ¬½Ó, Ä¬ÈÏÉèÖÃÃ¿¸öCPUºË ĞÄ Ò»¸öÏß³Ì
-    #    worker-threads: 600   # ×èÈûÈÎÎñÏß³Ì³Ø, µ±Ö´ ĞĞ?ÀàËÆservletÇëÇó×èÈû²Ù×÷, undertow»á´ÓÕâ¸öÏß³Ì³ØÖĞÈ¡µÃÏß³Ì,ËüµÄÖµÉèÖÃÈ¡¾öÓÚÏµÍ³µÄ¸ºÔØ
-    buffer-size: 2048     # Ã¿¿ébufferµÄ¿Õ¼ä ´ó Ğ¡,Ô½ Ğ¡µÄ¿Õ¼ä±»Àû? ÓÃÔ½³ä·Ö£¬¿é¶àÁË?µ«ÊÇ»á±äÂı
-    direct-buffers: true  # ÊÇ·ñ·ÖÅäµÄÖ±½ÓÄÚ´æ
+    #    io-threads: 4         # ï¿½ï¿½ï¿½ï¿½IOï¿½ß³ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ÒªÖ´ ï¿½ï¿½? ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,ï¿½ï¿½ï¿½Ç»á¸ºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, Ä¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¿ï¿½ï¿½CPUï¿½ï¿½ ï¿½ï¿½ Ò»ï¿½ï¿½ï¿½ß³ï¿½
+    #    worker-threads: 600   # ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß³Ì³ï¿½, ï¿½ï¿½Ö´ ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½servletï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, undertowï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß³Ì³ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ß³ï¿½,ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ÏµÍ³ï¿½Ä¸ï¿½ï¿½ï¿½
+    buffer-size: 2048     # Ã¿ï¿½ï¿½bufferï¿½Ä¿Õ¼ï¿½ ï¿½ï¿½ Ğ¡,Ô½ Ğ¡ï¿½Ä¿Õ¼ä±»ï¿½ï¿½? ï¿½ï¿½Ô½ï¿½ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½Ç»ï¿½ï¿½ï¿½ï¿½
+    direct-buffers: true  # ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½Ú´ï¿½
 
 curator:
-  retryCount: 5
-  elapsedTimeMs: 5000
-  connectString: 106.54.211.146:2181
-  sessionTimeoutMs: 60000
-  connectionTimeoutMs: 10000
+  retry-count: 5
+  elapsed-time-ms: 0
+  connect-string: 106.54.211.146:2181
+  session-timeout-ms: 60000
+  connection-timeout-ms: 10000
+  distributed-mutex-znode: "/distributed-mutex-znode"
+  distributed-atomic-long-znode: "/distributed-atomic-long-znode"
+  distributed-barrier-znode: "/distributed-barrier-znode"
+  distributed-mutex-rw-znode: "/distributed-mutex-rw-znode"
+  distributed-delay-q-znode: "/distributed-delay-q-znode"

@@ -6,7 +6,6 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.ZooDefs;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,8 @@ import java.util.concurrent.CountDownLatch;
 
 @Slf4j
 @Service
-public class ZkDistributedLock implements DistributedLock, InitializingBean {
+@Deprecated
+public class ZkDistributedLockRaw {
 
     private final static String ROOT_PATH_LOCK = "distribution-lock";
     private CountDownLatch countDownLatch = new CountDownLatch(1);
@@ -93,8 +93,8 @@ public class ZkDistributedLock implements DistributedLock, InitializingBean {
     }
 
     //创建父节点，并创建永久节点
-    @Override
-    public void afterPropertiesSet() {
+//    @Override
+//    public void afterPropertiesSet() {
 //        curatorFramework = curatorFramework.usingNamespace("lock-namespace");
 //        String path = "/" + ROOT_PATH_LOCK;
 //        try {
@@ -110,5 +110,5 @@ public class ZkDistributedLock implements DistributedLock, InitializingBean {
 //        } catch (Exception e) {
 //            log.error("connect zookeeper fail，please check the log >> {}", e.getMessage(), e);
 //        }
-    }
+//    }
 }
