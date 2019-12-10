@@ -27,6 +27,7 @@
         <module>zsh-springboot-mybatisplus</module>
         <module>zsh-springboot-kafka</module>
         <module>zsh-springboot-zookeeper</module>
+        <module>zsh-springboot-elasticsearch</module>
     </modules>
 
     <dependencies>

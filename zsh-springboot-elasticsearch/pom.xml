@@ -7,36 +7,19 @@
         <artifactId>template</artifactId>
         <version>2.2.1-SNAPSHOT</version>
     </parent>
-    <artifactId>mybatisplus</artifactId>
-    <version>2.2.1-SNAPSHOT</version>
-    <name>zsh-springboot-mybatisplus</name>
+    <artifactId>elasticsearch</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>zsh-springboot-elasticsearch</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
-        <mybatis-plus-boot-starter.version>3.2.0</mybatis-plus-boot-starter.version>
-        <mybatis-plus-generator.version>3.3.0</mybatis-plus-generator.version>
+        <java.version>1.8</java.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus-boot-starter.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-generator</artifactId>
-            <version>${mybatis-plus-generator.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-engine-core</artifactId>
-            <version>2.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

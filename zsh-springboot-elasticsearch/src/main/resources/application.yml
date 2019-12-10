@@ -1,0 +1,5 @@
+spring:
+  data:
+    elasticsearch:
+      cluster-nodes: 172.22.122.24:9300
+      cluster-name: docker-cluster
