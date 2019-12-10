@@ -7,6 +7,8 @@ import org.apache.curator.framework.recipes.atomic.DistributedAtomicLong;
 import org.apache.curator.framework.recipes.barriers.DistributedBarrier;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
+import org.apache.curator.framework.recipes.locks.InterProcessSemaphoreMutex;
+import org.apache.curator.framework.recipes.locks.InterProcessSemaphoreV2;
 import org.apache.curator.framework.recipes.queue.DistributedDelayQueue;
 import org.apache.curator.framework.recipes.queue.QueueBuilder;
 import org.apache.curator.framework.recipes.queue.QueueConsumer;
@@ -61,6 +63,12 @@ public class CuratorConfiguration {
     public DistributedAtomicLong distributedAtomicLong(CuratorFramework curatorFramework, RetryPolicy retryPolicy) {
         return new DistributedAtomicLong(curatorFramework, curatorConfiguration.getDistributedAtomicLongZnode(), retryPolicy);
     }
+
+    /**
+     * 屏障
+     * @param curatorFramework
+     * @return
+     */
     @Bean
     public DistributedBarrier distributedBarrier(CuratorFramework curatorFramework) {
         return new DistributedBarrier(curatorFramework, curatorConfiguration.getDistributedBarrierZnode());
@@ -74,6 +82,16 @@ public class CuratorConfiguration {
     @Bean
     public InterProcessReadWriteLock interProcessReadWriteLock(CuratorFramework curatorFramework) {
         return new InterProcessReadWriteLock(curatorFramework, curatorConfiguration.getDistributedMutexRwZnode());
+    }
+
+    /**
+     * 信号量限制
+     * @param curatorFramework
+     * @return
+     */
+    @Bean
+    public InterProcessSemaphoreV2 interProcessSemaphoreMutex(CuratorFramework curatorFramework) {
+        return new InterProcessSemaphoreV2(curatorFramework, curatorConfiguration.getDistributedSemaphoreZnode(),curatorConfiguration.getDistributedSemaphoreLease());
     }
 
     /**

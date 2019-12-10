@@ -18,4 +18,6 @@ public class CuratorConfigurationProperties {
     private String distributedMutexZnode;
     private String distributedMutexRwZnode;
     private String distributedDelayQZnode;
+    private String distributedSemaphoreZnode;
+    private Integer distributedSemaphoreLease;
 }
