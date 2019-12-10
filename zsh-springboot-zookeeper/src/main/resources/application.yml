@@ -9,7 +9,7 @@ server:
 curator:
   retry-count: 5
   elapsed-time-ms: 0
-  connect-string: 172.22.122.23:2181
+  connect-string: 106.54.211.146:2181
   session-timeout-ms: 60000
   connection-timeout-ms: 10000
   distributed-mutex-znode: "/distributed-mutex-znode"

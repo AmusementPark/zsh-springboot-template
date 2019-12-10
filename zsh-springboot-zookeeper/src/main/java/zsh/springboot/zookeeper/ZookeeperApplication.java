@@ -2,172 +2,112 @@ package zsh.springboot.zookeeper;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.recipes.cache.ChildData;
+import org.apache.curator.framework.recipes.cache.PathChildrenCache;
+import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.List;
+
 @Slf4j
 @SpringBootApplication
-public class ZookeeperApplication {
+public class ZookeeperApplication implements InitializingBean {
 
     @Autowired
     private CuratorFramework curatorFramework;
+    private PathChildrenCache pathChildrenCache;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        pathChildrenCache = new PathChildrenCache(curatorFramework, "/insert_node_with_mode_sequential", true);
+        pathChildrenCache.getListenable().addListener((CuratorFramework curatorFramework, PathChildrenCacheEvent event) -> {
+//            log.info("update event type:" + event.getType() + ",path:" + event.getData().getPath() + ",data:" + new String(event.getData().getData()));
+//            log.info("update event type:" + event.getType() + ",path:" + event.getData().getPath());
+            log.info(" ------------ update event type:" + event.getType());
+//            List<ChildData> childDataList = pathChildrenCache.getCurrentData();
+//            if (childDataList != null && childDataList.size() > 0) {
+//                System.out.println("path all children list:");
+//                for (ChildData childData : childDataList) {
+//                    System.out.println("path:" + childData.getPath() + "," + new String(childData.getData()));
+//                }
+//            }
+        });
+        pathChildrenCache.start();
+    }
 
     public static void main(String[] args) throws Exception {
         ZookeeperApplication app = SpringApplication.run(ZookeeperApplication.class, args).getBean(ZookeeperApplication.class);
-//        app.executorService = Executors.newFixedThreadPool(10);
-//        app.atomicInteger = new AtomicInteger();
-//        app.createNode_PERSISTENT_SEQUENTIAL();
-//        app.readNodeContent();
-//        app.distributedAtomicLongSequence.sequence();
+//        app.insertNodeWithModeEmpty();
+        Thread.sleep(10000);
+        app.curatorFramework.setData().forPath("/insert_node_with_mode_sequential", "2222".getBytes());
+        Thread.sleep(10000);
+        app.curatorFramework.delete().forPath("/insert_node_with_mode_sequential");
     }
 
-//    @Scheduled(fixedDelay=3000)
-//    private void ansyc() throws Exception {
-////        createNodeWithContent();
-//        checkNodeExists();
-//    }
-
-//    private void tryCuratorLock() {
-//        final Map<String, Long> t = new HashMap<String, Long>() {{
-//            put("st", System.currentTimeMillis());
-//        }};
-//        Runnable r = () -> {
-//            while(true) {
-//                int calls = atomicInteger.incrementAndGet();
-//                try {
-//                    interProcessMutex();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                if (calls % 1000 == 0) {
-//                    long et = System.currentTimeMillis();
-//                    long st = t.get("st");
-//                    System.out.println("call " + calls + " times, consume: "+ (et-st));
-//                    t.put("st", et);
-//                }
-//            }
-//        };
-//        for (int i=0; i<15; i++) {
-//            executorService.submit(r);
-//        }
-//    }
-//
-//    private void tryConcurrentDistributedLock() {
-//        Runnable lock = () -> {
-////            while (true) {
-//                log.info("--------------------------------------------------");
-//                    zkDistributedLock.acquireDistributedLock("t");
-//            zkDistributedLock.acquireDistributedLock("t");
-////                    zkDistributedLock.releaseDistributedLock("t");
-////                try {
-////                    Thread.sleep(1000);
-////                } catch (InterruptedException e) {
-////                    e.printStackTrace();
-////                }
-////            }
-//        };
-//        Runnable unlock = () -> {
-//            try {
-//                Thread.sleep(5000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            zkDistributedLock.releaseDistributedLock("t");
-//        };
-//        executorService.submit(lock);
-//        executorService.submit(unlock);
-//    }
-
-
-
-
-    public void createNode_PERSISTENT_SEQUENTIAL() throws Exception {
-        Stat stat = curatorFramework.checkExists().forPath("/root");
-        if (stat == null) {
-            curatorFramework.create().withMode(CreateMode.PERSISTENT).forPath("/root");
-        }
-//        curatorFramework.create().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/root/sequential");
-        for (int i=0; i<4; i++) {
-            curatorFramework.create().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/root/sequential_");
-        }
+    /**
+     * 清空所有节点
+     * @throws Exception
+     */
+    public void truncateAllNode() throws Exception {
+        curatorFramework.delete().forPath("/insert_node_empty");
+        curatorFramework.delete().forPath("/insert_node_with_content");
+        curatorFramework.delete().forPath("/insert_node_with_mode_empty");
+        // 花式删除方式
+//        curatorFramework.delete().deletingChildrenIfNeeded().forPath("/insert_node_with_mode_sequential");
+//        curatorFramework.delete().withVersion(9999).forPath("insert_node_empty");
+//        curatorFramework.delete().guaranteed().forPath("insert_node_empty");
     }
 
     /**
      * 创建一个节点，初始内容为空
      * @throws Exception
      */
-    public void createNode() throws Exception {
-        curatorFramework.create().forPath("path");
+    public void insertNodeEmpty() throws Exception {
+        curatorFramework.create().forPath("insert_node_empty");
+    }
+    /**
+     * 创建一个节点，指定创建模式（临时节点），内容为空
+     * 创建一个持久顺序节点
+     * @throws Exception
+     */
+    public void insertNodeWithModeEmpty() throws Exception {
+//        curatorFramework.create().withMode(CreateMode.EPHEMERAL).forPath("insert_node_with_mode_empty");
+        String sss = curatorFramework.create().forPath("/insert_node_with_mode_sequential");
+        System.out.println(sss);
+        Thread.sleep(2000);
+        curatorFramework.create().withMode(CreateMode.PERSISTENT_SEQUENTIAL).forPath("/insert_node_with_mode_sequential/sequential_");
     }
 
     /**
      * 创建一个节点，附带初始化内容
      * @throws Exception
      */
-    public void createNodeWithContent() throws Exception {
-        Stat stat = curatorFramework.checkExists().forPath("/root");
+    public void insertNodeWithContent() throws Exception {
+        Stat stat = curatorFramework.checkExists().forPath("/insert_node_with_content");
         if (stat == null) {
-            curatorFramework.create().forPath("/root", "DATADATADATA".getBytes());
-            System.out.println("CREATE ZOOKEEPER NODE");
+            curatorFramework.create().forPath("/insert_node_with_content", "INSERT NODE WITH CONTENT".getBytes());
         } else {
-            byte[] a = curatorFramework.getData().forPath("/root");
-            System.out.println(new String(a));
+            byte[] a = curatorFramework.getData().forPath("/insert_node_with_content");
+            log.info("{}", new String(a));
         }
-    }
-
-    public void readNodeContent() throws Exception {
-        int nodeCount = 0;
-        while (true) {
-            Thread.sleep(200);
-//            Stat stat = curatorFramework.checkExists().forPath("/root/sequential_000000000"+nodeCount);
-//            if (stat == null) {
-//                System.out.println("EOF");
-//                break;
-//            } else {
-                byte[] a = curatorFramework.getData().forPath("/root");
-//                byte[] a = curatorFramework.getData().forPath("/root/sequential_000000000"+nodeCount%8);
-                System.out.println("/root/sequential_000000000"+nodeCount%9+" : "+new String(a));
-                nodeCount++;
-//            }
-        }
-    }
-
-    /**
-     * 创建一个节点，指定创建模式（临时节点），内容为空
-     * @throws Exception
-     */
-    public void createNodeWithMode() throws Exception {
-        curatorFramework.create().withMode(CreateMode.EPHEMERAL).forPath("path");
     }
 
     /**
      * 检查节点是否存在
      * @throws Exception
      */
-    public void checkNodeExists() throws Exception {
+    public Stat checkNodeExists() throws Exception {
         Stat stat = curatorFramework.checkExists().forPath("/path");
         if (stat != null) {
             System.out.println(stat.getDataLength());
-        } else {
-            System.out.println("-------");
         }
+        return stat;
     }
 
-    public void readNode() throws Exception {
-        byte[] a = curatorFramework.getData().forPath("/path");
-        System.out.println(new String(a));
-        try {
-            Stat stat = curatorFramework.checkExists().forPath("/pppp");
-            if (stat == null) {
-                System.out.println("asdfasd");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
 
 }
