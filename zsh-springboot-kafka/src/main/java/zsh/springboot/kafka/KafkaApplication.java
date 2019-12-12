@@ -14,24 +14,28 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
-@EnableScheduling
+@RestController
+@RequestMapping("")
 @SpringBootApplication
 public class KafkaApplication {
 
     public static void main(String[] args) {
         KafkaApplication kafkaApplication = SpringApplication.run(KafkaApplication.class, args).getBean(KafkaApplication.class);
-        kafkaApplication.producer();
+//        kafkaApplication.producer();
     }
 
     @Autowired
     KafkaTemplate<String, String> kafkaTemplate;
 
-//    @Scheduled(fixedDelay = 5)
+    @GetMapping("produce")
     public void producer() {
         ProducerRecord<String, String> record = new ProducerRecord<>(
             "T1",
