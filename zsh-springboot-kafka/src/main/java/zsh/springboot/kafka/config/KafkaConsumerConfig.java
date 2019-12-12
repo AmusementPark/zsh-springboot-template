@@ -75,6 +75,7 @@ public class KafkaConsumerConfig {
 //        factory.setBatchErrorHandler(new BatchLoggingErrorHandler());
         // 设置成手动模式
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);
+        factory.getContainerProperties().setMissingTopicsFatal(false);  // 新版本设置不检查TOPIC是否存在
 
 //        configurer.configure(factory, consumerFactory());
         // 最大重试三次
