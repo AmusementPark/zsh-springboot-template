@@ -1,0 +1,31 @@
+server:
+  port: 9800
+
+spring:
+  application:
+    name: zsh-zuul-sentinel
+  cloud:
+    sentinel:
+      zuul:
+        order:
+          pre: 1000
+          post: 1000
+          error: -1
+
+zuul:
+  host:
+    connect-timeout-millis: 20000 #HTTP超时
+    socket-timeout-millis: 20000 #Socket超时
+  strip-prefix: true
+  add-host-header: true
+  routes:
+    zsh-proxy-baidu:
+      path: /zsh/baidu/**
+      url: http://www.baidu.com
+#  include-debug-header: true
+#  ignored-services:
+#    - xxx
+#    - xxx
+#  zsh-example-service:
+#    path: /api/other/service/**
+#    serviceId: eureka-xxx-service-id
