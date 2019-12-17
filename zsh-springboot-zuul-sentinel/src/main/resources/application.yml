@@ -1,6 +1,5 @@
 server:
   port: 9800
-
 spring:
   application:
     name: zsh-zuul-sentinel
@@ -11,7 +10,16 @@ spring:
           pre: 1000
           post: 1000
           error: -1
-
+    nacos:
+      config:
+        server-addr: 172.22.122.21:8848
+#        file-extension: yaml
+#        namespace: DEFAULT_GROUP
+#        endpoint: 172.22.122.21:8848
+      discovery:
+        server-addr: 172.22.122.21:8848
+#  profiles:
+#    active: dev
 zuul:
   host:
     connect-timeout-millis: 20000 #HTTP超时
@@ -20,12 +28,17 @@ zuul:
   add-host-header: true
   routes:
     zsh-proxy-baidu:
-      path: /zsh/baidu/**
-      url: http://www.baidu.com
+      path: /zsh/baidu/**         # curl localhost:9800/zsh/baidu 带后缀则成为path-parameter
+      url: http://localhost:9800/get
 #  include-debug-header: true
 #  ignored-services:
 #    - xxx
 #    - xxx
-#  zsh-example-service:
-#    path: /api/other/service/**
-#    serviceId: eureka-xxx-service-id
+    zsh-example-service:
+      path: /get/**
+      service-id: zsh-zuul-sentinel-2
+
+logging:
+  level:
+    root: INFO
+
