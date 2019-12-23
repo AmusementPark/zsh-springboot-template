@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: zsh-zuul-sentinel
+  cloud:
+    nacos:
+      config:
+        server-addr: 172.22.122.21:8848
+        file-extension: yaml
+      discovery:
+        server-addr: 172.22.122.21:8848

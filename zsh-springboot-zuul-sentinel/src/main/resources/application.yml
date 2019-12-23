@@ -2,7 +2,7 @@ server:
   port: 9800
 spring:
   application:
-    name: zsh-zuul-sentinel
+    name: zsh-nacos-experimental
   cloud:
     sentinel:
       zuul:
@@ -10,35 +10,58 @@ spring:
           pre: 1000
           post: 1000
           error: -1
-    nacos:
-      config:
-        server-addr: 172.22.122.21:8848
-#        file-extension: yaml
-#        namespace: DEFAULT_GROUP
-#        endpoint: 172.22.122.21:8848
-      discovery:
-        server-addr: 172.22.122.21:8848
-#  profiles:
-#    active: dev
+      transport:
+        dashboard: 172.22.122.21:9600
+#-------------------------------------
+      datasource:
+        #限流参数
+        ds1:
+          nacos:
+#            private String serverAddr;
+#            private String groupId = "DEFAULT_GROUP";
+#            private String dataId;
+#            private String endpoint;
+#            private String namespace;
+#            private String accessKey;
+#            private String secretKey;
+#            private String dataType = "json";
+#            private RuleType ruleType;
+#              FLOW("flow", FlowRule.class),
+#              DEGRADE("degrade", DegradeRule.class),
+#              PARAM_FLOW("param-flow", ParamFlowRule.class),
+#              SYSTEM("system", SystemRule.class),
+#              AUTHORITY("authority", AuthorityRule.class),
+#              GW_FLOW("gw-flow", "com.alibaba.csp.sentinel.adapter.gateway.common.rule.GatewayFlowRule"),
+#              GW_API_GROUP("gw-api-group", "com.alibaba.csp.sentinel.adapter.gateway.common.api.ApiDefinition");
+#            private String converterClass;
+            server-addr: ${spring.cloud.nacos.config.server-addr}
+            dataId: ${spring.application.name}-sentinel-gw-flow
+            groupId: DEFAULT_GROUP
+            rule-type: gw-flow          #固定类型
+        #API代理列表
+        ds2:
+          nacos:
+            server-addr: ${spring.cloud.nacos.config.server-addr}
+            dataId: ${spring.application.name}-sentinel-gw-api-group
+            groupId: DEFAULT_GROUP
+            rule-type: gw-api-group     #固定类型
 zuul:
   host:
+    socket-timeout-millis:  20000 #Socket超时
     connect-timeout-millis: 20000 #HTTP超时
-    socket-timeout-millis: 20000 #Socket超时
   strip-prefix: true
   add-host-header: true
+  # 路由参数
   routes:
-    zsh-proxy-baidu:
-      path: /zsh/baidu/**         # curl localhost:9800/zsh/baidu 带后缀则成为path-parameter
-      url: http://localhost:9800/get
-#  include-debug-header: true
-#  ignored-services:
-#    - xxx
-#    - xxx
     zsh-example-service:
       path: /get/**
-      service-id: zsh-zuul-sentinel-2
-
+      service-id: zsh-nacos-producer
+    zsh-another-service:
+      path: /ano/**
+      service-id: zsh-nacos-producer
+    zsh-config-service:
+      path: /adm/**
+      service-id: zsh-nacos-producer
 logging:
   level:
     root: INFO
-

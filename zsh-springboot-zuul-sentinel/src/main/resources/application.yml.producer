@@ -1,0 +1,8 @@
+server:
+  port: 9801
+spring:
+  application:
+    name: zsh-nacos-producer
+#logging:
+#  file:
+#    path: consumer.log

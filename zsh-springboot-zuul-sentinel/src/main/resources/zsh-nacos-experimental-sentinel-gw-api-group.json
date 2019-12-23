@@ -1,0 +1,37 @@
+[{
+  "apiName": "zsh-example-s",
+  "predicateItems": [
+    {
+      "pattern": "/get/**",
+      "matchStrategy": 1
+    }
+  ]},{
+  "apiName": "zsh-another-v1-s",
+  "predicateItems": [
+    {
+      "pattern": "/ano/another/v1",
+      "matchStrategy": 0
+    }
+  ]},{
+  "apiName": "zsh-another-v2-s",
+  "predicateItems": [
+    {
+      "pattern": "/ano/another/v2",
+      "matchStrategy": 0
+    }
+  ]},{
+  "apiName": "zsh-another-s",
+  "predicateItems": [
+    {
+      "pattern": "/ano/another",
+      "matchStrategy": 0
+    }
+  ]},{
+  "apiName": "zsh-config-s",
+  "predicateItems": [
+    {
+      "pattern": "/adm/**",
+      "matchStrategy": 1
+    }
+  ]
+}]

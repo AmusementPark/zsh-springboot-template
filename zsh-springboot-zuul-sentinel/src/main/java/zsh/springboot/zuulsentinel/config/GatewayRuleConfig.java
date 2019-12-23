@@ -9,17 +9,20 @@
 //import com.alibaba.csp.sentinel.adapter.gateway.common.rule.GatewayParamFlowItem;
 //import com.alibaba.csp.sentinel.adapter.gateway.common.rule.GatewayRuleManager;
 //import com.alibaba.csp.sentinel.slots.block.RuleConstant;
-//import org.springframework.context.annotation.Configuration;
+//import org.springframework.beans.factory.InitializingBean;
 //
-//import javax.annotation.PostConstruct;
 //import java.util.HashSet;
 //import java.util.Set;
 //
-//@Configuration
-//public class GatewayRuleConfig {
+///**
+// * 通过NACOS配置读取，如果没有Nacos则用本地方式读取
+// */
 //
-//    @PostConstruct
-//    public void doInit() {
+////@Configuration
+//public class GatewayRuleConfig implements InitializingBean {
+//
+//    @Override
+//    public void afterPropertiesSet() throws Exception {
 //        // Prepare some gateway rules and API definitions (only for demo).
 //        // It's recommended to leverage dynamic data source or the Sentinel dashboard to push the rules.
 //        initCustomizedApis();
@@ -43,8 +46,10 @@
 //        ApiDefinition apiZshExampleService = new ApiDefinition("zsh-example-service")
 //                .setPredicateItems(new HashSet<ApiPredicateItem>() {{
 ////                    add(new ApiPathPredicateItem().setPattern("/ahas"));
-//                    add(new ApiPathPredicateItem().setPattern("/get/**")
-//                            .setMatchStrategy(SentinelGatewayConstants.URL_MATCH_STRATEGY_PREFIX));
+//                    add(new ApiPathPredicateItem()
+//                        .setPattern("/get/**")
+//                        .setMatchStrategy(SentinelGatewayConstants.URL_MATCH_STRATEGY_PREFIX)
+//                    );
 //                }});
 //
 //        definitions.add(api1);
@@ -58,7 +63,7 @@
 //
 //        rules.add(new GatewayFlowRule("zsh-example-service")
 //            .setResourceMode(SentinelGatewayConstants.RESOURCE_MODE_CUSTOM_API_NAME)
-//            .setCount(2)
+//            .setCount(20)
 //            .setIntervalSec(1)
 //        );
 //

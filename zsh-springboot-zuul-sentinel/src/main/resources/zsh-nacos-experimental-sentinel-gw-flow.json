@@ -1,0 +1,21 @@
+[{
+  "resource": "zsh-example-s",
+  "count": 5,
+  "resourceMode": 0
+},{
+  "resource": "zsh-another-s",
+  "count": 4,
+  "resourceMode": 0
+},{
+  "resource": "zsh-another-v1-s",
+  "count": 9,
+  "resourceMode": 0
+},{
+  "resource": "zsh-another-v2-s",
+  "count": 4,
+  "resourceMode": 0
+},{
+  "resource": "zsh-config-s",
+  "count": 5,
+  "resourceMode": 0
+}]
