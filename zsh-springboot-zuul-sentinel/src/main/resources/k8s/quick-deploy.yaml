@@ -1,0 +1,108 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nacos-service
+  namespace: ns-ros-common
+  labels:
+    app: nacos-service
+spec:
+  clusterIP: None
+  ports:
+  - port: 8848
+    name: server
+    targetPort: 8848
+  selector:
+    app: nacos
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nacos-cm
+  namespace: ns-ros-common
+data:
+  mysql.db.number: "1"
+  mysql.master.db.name: "nacos"
+  mysql.master.host: "MYSQLHOST"
+  mysql.master.port: "3306"
+  mysql.master.user: "ROOT"
+  mysql.master.password: "PASSWORD"
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nacos
+  namespace: ns-ros-common
+spec:
+  serviceName: nacos-service
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: nacos
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: "app"
+                operator: In
+                values:
+                - nacos-service
+            topologyKey: "kubernetes.io/hostname"
+      containers:
+      - name: k8snacos
+        imagePullPolicy: Always
+        image: registry.cn-hangzhou.aliyuncs.com/REPOSITORY/nacos:latest
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8848
+          name: client
+        env:
+        - name: NACOS_REPLICAS
+          value: "3"
+        - name: MYSQL_DATABASE_NUM
+          valueFrom:
+            configMapKeyRef:
+              name: nacos-cm
+              key: mysql.db.number
+        - name: MYSQL_MASTER_SERVICE_DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: nacos-cm
+              key: mysql.master.db.name
+        - name: MYSQL_MASTER_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: nacos-cm
+              key: mysql.master.port
+        - name: MYSQL_MASTER_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: nacos-cm
+              key: mysql.master.host
+        - name: MYSQL_MASTER_SERVICE_USER
+          valueFrom:
+            configMapKeyRef:
+              name: nacos-cm
+              key: mysql.master.user
+        - name: MYSQL_MASTER_SERVICE_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: nacos-cm
+              key: mysql.master.password
+        - name: NACOS_SERVER_PORT
+          value: "8848"
+        - name: PREFER_HOST_MODE
+          value: "hostname"
+        - name: NACOS_SERVERS
+          value: "nacos-0.NACOS-service.NAMESPACE.svc.cluster.local:8848 nacos-1.NACOS-service.NAMESPACE.svc.cluster.local:8848 nacos-2.NACOS-service.NAMESPACE.svc.cluster.local:8848"
+  selector:
+    matchLabels:
+      app: nacos

@@ -7,22 +7,24 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-//import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import zsh.springboot.zuulsentinel.config.Feign;
 
 @Slf4j
 @RestController
 @RequestMapping("")
-//@EnableZuulProxy
+@EnableZuulProxy
 @RefreshScope
 @EnableDiscoveryClient
 @EnableScheduling
+@EnableFeignClients
 @SpringBootApplication
 public class ZuulSentinelApplication {
 
@@ -31,6 +33,8 @@ public class ZuulSentinelApplication {
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private Feign feign;
 
     // unsafe
     private int iProduce;
@@ -74,6 +78,22 @@ public class ZuulSentinelApplication {
     public String anotherV2() {
         iAnotherV2++;
         return "ANOTHERV2";
+    }
+
+    @GetMapping("timeout")
+    public String timeout() {
+        try {
+            Thread.sleep(1000*15);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "TIMEOUT";
+    }
+
+    @GetMapping("fallback")
+    public String fallback() {
+//        throw new RuntimeException("EXCEPTION");
+        return feign.getProduce();
     }
 
     @GetMapping("config")

@@ -1,34 +1,37 @@
-//package zsh.springboot.zuulsentinel.config;
-//
-//import com.alibaba.csp.sentinel.adapter.gateway.common.SentinelGatewayConstants;
-//import com.alibaba.csp.sentinel.adapter.gateway.common.api.ApiDefinition;
-//import com.alibaba.csp.sentinel.adapter.gateway.common.api.ApiPathPredicateItem;
-//import com.alibaba.csp.sentinel.adapter.gateway.common.api.ApiPredicateItem;
-//import com.alibaba.csp.sentinel.adapter.gateway.common.api.GatewayApiDefinitionManager;
-//import com.alibaba.csp.sentinel.adapter.gateway.common.rule.GatewayFlowRule;
-//import com.alibaba.csp.sentinel.adapter.gateway.common.rule.GatewayParamFlowItem;
-//import com.alibaba.csp.sentinel.adapter.gateway.common.rule.GatewayRuleManager;
-//import com.alibaba.csp.sentinel.slots.block.RuleConstant;
-//import org.springframework.beans.factory.InitializingBean;
-//
-//import java.util.HashSet;
-//import java.util.Set;
-//
-///**
-// * 通过NACOS配置读取，如果没有Nacos则用本地方式读取
-// */
-//
-////@Configuration
-//public class GatewayRuleConfig implements InitializingBean {
-//
-//    @Override
-//    public void afterPropertiesSet() throws Exception {
-//        // Prepare some gateway rules and API definitions (only for demo).
-//        // It's recommended to leverage dynamic data source or the Sentinel dashboard to push the rules.
+package zsh.springboot.zuulsentinel.config;
+
+import com.alibaba.csp.sentinel.adapter.gateway.common.SentinelGatewayConstants;
+import com.alibaba.csp.sentinel.adapter.gateway.common.api.ApiDefinition;
+import com.alibaba.csp.sentinel.adapter.gateway.common.api.ApiPathPredicateItem;
+import com.alibaba.csp.sentinel.adapter.gateway.common.api.ApiPredicateItem;
+import com.alibaba.csp.sentinel.adapter.gateway.common.api.GatewayApiDefinitionManager;
+import com.alibaba.csp.sentinel.adapter.gateway.common.rule.GatewayFlowRule;
+import com.alibaba.csp.sentinel.adapter.gateway.common.rule.GatewayParamFlowItem;
+import com.alibaba.csp.sentinel.adapter.gateway.common.rule.GatewayRuleManager;
+import com.alibaba.csp.sentinel.adapter.gateway.zuul.fallback.ZuulBlockFallbackManager;
+import com.alibaba.csp.sentinel.slots.block.RuleConstant;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * 通过NACOS配置读取，如果没有Nacos则用本地方式读取
+ */
+
+@Configuration
+public class GatewayRuleConfig implements InitializingBean {
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        // Prepare some gateway rules and API definitions (only for demo).
+        // It's recommended to leverage dynamic data source or the Sentinel dashboard to push the rules.
 //        initCustomizedApis();
 //        initGatewayRules();
-//    }
-//
+        ZuulBlockFallbackManager.registerProvider(new SentinelFallBackHandler());
+    }
+
 //    private void initCustomizedApis() {
 //        Set<ApiDefinition> definitions = new HashSet<>();
 //        ApiDefinition api1 = new ApiDefinition("some_customized_api")
@@ -109,5 +112,5 @@
 //        );
 //        GatewayRuleManager.loadRules(rules);
 //    }
-//
-//}
+
+}

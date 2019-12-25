@@ -12,7 +12,7 @@ spring:
           error: -1
       transport:
         dashboard: 172.22.122.21:9600
-#-------------------------------------
+#--------------------------------------------------------------------
       datasource:
         #限流参数
         ds1:
@@ -45,6 +45,7 @@ spring:
             dataId: ${spring.application.name}-sentinel-gw-api-group
             groupId: DEFAULT_GROUP
             rule-type: gw-api-group     #固定类型
+#--------------------------------------------------------------------
 zuul:
   host:
     socket-timeout-millis:  20000 #Socket超时
@@ -62,6 +63,54 @@ zuul:
     zsh-config-service:
       path: /adm/**
       service-id: zsh-nacos-producer
+    zsh-exception-service:
+      path: /exp/**
+      service-id: zsh-nacos-producer
+#--------------------------------------------------------------------
+#下游服务负载均衡超时配置
+zsh-nacos-producer:
+  ribbon:
+    ReadTimeout: 4000
+    ConnectTimeout: 2000
+#    MaxAutoRetries: 0
+#    MaxAutoRetriesNextServer: 0  #默认寻找下一个负载服务重试一次
+hystrix:
+  metrics:
+    enabled: false
+  command:
+    #default: #默认为default全局生效
+    zsh-nacos-producer:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+#--------------------------------------------------------------------
 logging:
   level:
     root: INFO
+  file:
+    path: info.log
+
+#zuul:
+#  routes:
+#    echo:
+#      path: /myusers/**
+#      serviceId: myusers-service
+#      stripPrefix: true
+#
+#hystrix:
+#  command:
+#    myusers-service:
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: ...
+#
+#myusers-service:
+#  ribbon:
+#    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+#    listOfServers: https://example1.com,http://example2.com
+#    ConnectTimeout: 1000
+#    ReadTimeout: 3000
+#    MaxTotalHttpConnections: 500
+#    MaxConnectionsPerHost: 100
