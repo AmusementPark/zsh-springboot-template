@@ -18,7 +18,7 @@ import java.util.List;
 public class MyBatisPlusAutoGenerator {
 
     public static void generateCode(String dbUrl,String username,String password,String packageName, String... tableNames) {
-//        String packageName = "com.geely.ros.ota.common.vehicle";
+//        String packageName = "com.xxx.xxx.xxx.xxx";
         //generateByTables(packageName, "t_student", "t_city", "t_idcard");
         generateByTables(dbUrl,username,password,packageName, tableNames);
     }
