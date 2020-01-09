@@ -36,7 +36,8 @@ public class KafkaApplication {
     public void producer() {
         ProducerRecord<String, String> record = new ProducerRecord<>(
             "T1",
-            RandomUtils.nextInt(4),
+//            RandomUtils.nextInt(4),
+                0,
             System.currentTimeMillis(),
             RandomStringUtils.randomAlphabetic(3),
             RandomStringUtils.randomAlphabetic(3)
@@ -78,19 +79,35 @@ public class KafkaApplication {
 
 
     @KafkaListener(id="defaultConsumerGroup-1", topics = "T1", errorHandler = "KafkaListenerErrorHandlerImpl")
-    public void testKafkaConsumer(ConsumerRecord<String, String> consumerRecord, Acknowledgment ack) {
+    public void testKafkaConsumerGrp1P1(ConsumerRecord<String, String> consumerRecord, Acknowledgment ack) {
         try {
             if (RandomUtils.nextBoolean()) {
-                log.info("CONSUME SUCC");
+                log.info("CONSUME SUCC - GRP1");
                 log.info("{}", consumerRecord);
             } else {
-                log.info("CONSUME ERRO");
+                log.info("CONSUME ERRO - GRP1");
                 throw new RuntimeException("Hey You!");
             }
         } finally {
             ack.acknowledge();  // 仍然ACK，但是已经进入重试流程
         }
     }
+
+    @KafkaListener(id="defaultConsumerGroup-2", topics = "T1", errorHandler = "KafkaListenerErrorHandlerImpl")
+    public void testKafkaConsumerGrp2(ConsumerRecord<String, String> consumerRecord, Acknowledgment ack) {
+        try {
+            if (RandomUtils.nextBoolean()) {
+                log.info("CONSUME SUCC - GRP2");
+                log.info("{}", consumerRecord);
+            } else {
+                log.info("CONSUME ERRO - GRP2");
+                throw new RuntimeException("Hey You!");
+            }
+        } finally {
+            ack.acknowledge();  // 仍然ACK，但是已经进入重试流程
+        }
+    }
+
 
     /**
      * 不设置异常处理Handler，重试

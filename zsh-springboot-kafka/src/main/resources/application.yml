@@ -3,7 +3,8 @@ spring:
     batch: true
     pollTimeOut: 6000
     concurrency: 1
-    bootstrap-servers: 106.54.211.146:9092
+#    bootstrap-servers: 106.54.211.146:9092
+    bootstrap-servers: 172.22.122.23:9092
     #    bootstrap-servers: 10.86.74.121:9092,10.86.74.122:9092,10.86.74.123:9092
     producer:
       retries: 3
@@ -36,6 +37,7 @@ spring:
       # ָ����Ϣkey����Ϣ��ı���뷽ʽ
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
 #logging:
 #  level:
 #    root: debug
