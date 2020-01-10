@@ -1,0 +1,10 @@
+[
+  {
+    "resource": "sr-produce",
+    "limitApp": "default",
+    "count": 2,
+    "timeWindow": 10,
+    "grade": 0,
+    "passCount": 0
+  }
+]

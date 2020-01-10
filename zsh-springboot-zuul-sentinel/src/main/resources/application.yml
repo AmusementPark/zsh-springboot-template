@@ -45,6 +45,20 @@ spring:
             dataId: ${spring.application.name}-sentinel-gw-api-group
             groupId: DEFAULT_GROUP
             rule-type: gw-api-group     #固定类型
+        #降级参数
+        ds3:
+          nacos:
+            server-addr: ${spring.cloud.nacos.config.server-addr}
+            dataId: ${spring.application.name}-sentinel-degrade
+            groupId: zsh-sentinel-template
+            rule-type: degrade          #固定类型
+        #接口限流参数
+        ds4:
+          nacos:
+            server-addr: ${spring.cloud.nacos.config.server-addr}
+            dataId: ${spring.application.name}-sentinel-flow
+            groupId: zsh-sentinel-template
+            rule-type: flow             #固定类型
 #--------------------------------------------------------------------
 zuul:
   host:
@@ -85,11 +99,14 @@ hystrix:
           thread:
             timeoutInMilliseconds: 3000
 #--------------------------------------------------------------------
-logging:
-  level:
-    root: INFO
-  file:
-    path: info.log
+feign:
+  sentinel:
+    enabled: true
+#logging:
+#  level:
+#    root: DEBUG
+#  file:
+#    path: info.log
 
 #zuul:
 #  routes:
@@ -104,7 +121,7 @@ logging:
 #      execution:
 #        isolation:
 #          thread:
-#            timeoutInMilliseconds: ...
+#            timeoutInMilliseconds: ...ge
 #
 #myusers-service:
 #  ribbon:

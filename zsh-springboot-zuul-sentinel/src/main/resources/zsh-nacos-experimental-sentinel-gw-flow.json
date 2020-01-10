@@ -1,7 +1,8 @@
 [{
   "resource": "zsh-example-s",
   "count": 5,
-  "resourceMode": 0
+  "resourceMode": 0,
+  "intervalSec": 1
 },{
   "resource": "zsh-exception-s",
   "count": 5,

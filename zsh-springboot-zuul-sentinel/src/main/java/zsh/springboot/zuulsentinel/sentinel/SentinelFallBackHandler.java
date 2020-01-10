@@ -1,4 +1,4 @@
-package zsh.springboot.zuulsentinel.config;
+package zsh.springboot.zuulsentinel.sentinel;
 
 import com.alibaba.csp.sentinel.adapter.gateway.zuul.fallback.BlockResponse;
 import com.alibaba.csp.sentinel.adapter.gateway.zuul.fallback.ZuulBlockFallbackProvider;
