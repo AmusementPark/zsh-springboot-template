@@ -1,0 +1,6 @@
+spring:
+  redis:
+    host: 106.54.211.146
+    port: 6399
+cache:
+  type: redisson
