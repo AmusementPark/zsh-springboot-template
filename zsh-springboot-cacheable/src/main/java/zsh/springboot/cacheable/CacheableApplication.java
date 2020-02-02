@@ -9,11 +9,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Profile;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.concurrent.ConcurrentMap;
 
 @Slf4j
 @EnableCaching
@@ -24,23 +27,18 @@ public class CacheableApplication {
 
     @Autowired
     private CacheableService cacheableService;
-//    @Autowired
-//    @Qualifier("caffeineCacheCA")
-//    private CaffeineCache caffeineCacheCA;
-//    @Autowired
-//    @Qualifier("caffeineCacheCB")
-//    private CaffeineCache caffeineCacheCB;
+    @Autowired
+    private ApplicationContext applicationContext;
 
+    @Autowired(required = false)
+    @Qualifier("caffeineCacheCA")
+    private CaffeineCache caffeineCacheCA;
+    @Autowired(required = false)
+    @Qualifier("caffeineCacheCB")
+    private CaffeineCache caffeineCacheCB;
 
     public static void main(String[] args) {
-        ApplicationContext applicationContext = SpringApplication.run(CacheableApplication.class, args);
-        CacheableApplication cacheableApplication = applicationContext.getBean(CacheableApplication.class);
-
-//        String str = cacheableApplication.cacheableService.getCaffeineStr("AAA");
-//        log.info(str);
-//        for (int i =0;i < 200; i++) {
-//            cacheableApplication.caffeine(RandomStringUtils.randomAlphabetic(3));
-//        }
+        SpringApplication.run(CacheableApplication.class, args);
     }
 
     @GetMapping("re")
@@ -50,7 +48,10 @@ public class CacheableApplication {
 
     @GetMapping("ca")
     public String caffeine(@RequestParam(value="cache",required = false, defaultValue = "AAA") String cache) {
-//        log.info("{}", caffeineCacheCA.getNativeCache().estimatedSize());
+        log.info("{}", caffeineCacheCA.getNativeCache().estimatedSize());
+        ConcurrentMap<Object, Object> map = caffeineCacheCA.getNativeCache().asMap();
+        map.forEach((k, v) -> System.out.println(String.format("%s - %s", k, v)));
+        System.out.println(applicationContext);
         return cacheableService.getCaffeineStr(cache);
     }
 

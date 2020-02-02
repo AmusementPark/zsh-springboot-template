@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCache;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +43,7 @@ public class CaffeineL1AndRedisL2CacheConfiguration {
     public enum Caches {
         CA(60,100),          //有效期600秒
         CB(7200,1000),  //有效期2个小时 , 最大容量1000
-        CaffeineL1AndRedisL2Cache(60,100)
+        CaffeineL1AndRedisL2Cache(10,100)
         ;
         Caches() {
         }
@@ -142,7 +143,7 @@ public class CaffeineL1AndRedisL2CacheConfiguration {
     @Bean(name="redisCacheManager")
     public RedisCacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofSeconds(1000))
+                .entryTtl(Duration.ofSeconds(10))
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))
                 .disableCachingNullValues();

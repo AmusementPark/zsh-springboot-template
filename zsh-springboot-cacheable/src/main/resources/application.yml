@@ -2,7 +2,7 @@ spring:
   application:
     name: cacheable-application
   profiles:
-    active: l2
+    active: caffeine
 management:
   endpoint:
     shutdown:
