@@ -1,10 +1,11 @@
 package zsh.springboot.mybatisplus.ds1.service.impl;
 
-import zsh.springboot.mybatisplus.ds1.model.Share;
-import zsh.springboot.mybatisplus.ds1.dao.ShareDao;
-import zsh.springboot.mybatisplus.ds1.service.ShareService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import zsh.springboot.mybatisplus.ds1.dao.ShareDao;
+import zsh.springboot.mybatisplus.ds1.model.Share;
+import zsh.springboot.mybatisplus.ds1.service.ShareService;
 
 /**
  * <p>
@@ -17,4 +18,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ShareServiceImpl extends ServiceImpl<ShareDao, Share> implements ShareService {
 
+    @Override
+    @Transactional(transactionManager = "ds1DataSourceTxManager", rollbackFor = Throwable.class)
+    public void insertTransactionalAndRollBack() {
+        Share share = Share.builder().shareCode("900030").shareName("未知证券").build();
+        save(share);
+        throw new RuntimeException("Oh no... rollback");
+    }
 }
