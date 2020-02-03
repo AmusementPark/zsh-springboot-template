@@ -48,10 +48,10 @@ public class CacheableApplication {
 
     @GetMapping("ca")
     public String caffeine(@RequestParam(value="cache",required = false, defaultValue = "AAA") String cache) {
-        log.info("{}", caffeineCacheCA.getNativeCache().estimatedSize());
+//        log.info("{}", caffeineCacheCA.getNativeCache().estimatedSize());
         ConcurrentMap<Object, Object> map = caffeineCacheCA.getNativeCache().asMap();
         map.forEach((k, v) -> System.out.println(String.format("%s - %s", k, v)));
-        System.out.println(applicationContext);
+        System.out.println("----------------------------------");
         return cacheableService.getCaffeineStr(cache);
     }
 
