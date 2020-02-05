@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zsh.springboot.shardingjdbcmybatisplus.ds.dao.TOrderItemDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="zsh.springboot.shardingjdbcmybatisplus.ds.model.TOrderItem">
+        <id column="order_item_id" property="orderItemId" />
+        <result column="order_id" property="orderId" />
+        <result column="user_id" property="userId" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <update id="truncate">
+        TRUNCATE TABLE t_order_item;
+    </update>
+
+</mapper>

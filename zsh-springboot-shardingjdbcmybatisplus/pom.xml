@@ -3,10 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>zsh.springboot</groupId>
-        <artifactId>template</artifactId>
-        <version>2.2.1-SNAPSHOT</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
+    <groupId>zsh.springboot</groupId>
     <artifactId>shardingjdbcmybatisplus</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>shardingjdbcmybatisplus</name>
@@ -14,6 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <shardingsphere.version>4.0.0</shardingsphere.version>
         <mybatis-plus-boot-starter.version>3.2.0</mybatis-plus-boot-starter.version>
         <mybatis-plus-generator.version>3.3.0</mybatis-plus-generator.version>
     </properties>
@@ -23,6 +26,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>sharding-jdbc-spring-boot-starter</artifactId>
+            <version>${shardingsphere.version}</version>
+        </dependency>
+
+        <!--mybatis-plus-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -48,6 +59,8 @@
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -68,6 +81,16 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>
+                        **/*.xml
+                    </include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 
 </project>

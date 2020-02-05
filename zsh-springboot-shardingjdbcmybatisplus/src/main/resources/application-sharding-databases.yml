@@ -1,0 +1,45 @@
+##
+# sharding-jdbc代理方式为将多个datasource封装成为一个
+# org.apache.shardingsphere.shardingjdbc.jdbc.adapter.AbstractDataSourceAdapter
+# 对于mybatis-plus来讲就是一个单一的datasource，因此可以使用mybatis-plus的auto-configuration的sqlSessionFactory配置
+##
+spring:
+  shardingsphere:
+    datasource:
+      names: ds0, ds1
+      ds0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://106.54.211.146:33006/ds_0?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: mima
+      ds1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://106.54.211.146:33006/ds_1?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: mima
+    sharding:
+      default-database-strategy:
+        inline:
+          algorithm-expression: ds$->{user_id % 2}
+          sharding-column: user_id
+      binding-tables: t_order, t_order_item
+      broadcast-tables: t_address
+      tables:
+        t_order:
+          actual-data-nodes: ds$->{0..1}.t_order
+          key-generator:
+            column: order_id
+            type: SNOWFLAKE
+            props:
+              worker:
+                id: 123
+        t_order_item:
+          actual-data-nodes: ds$->{0..1}.t_order_item
+          key-generator:
+            column: order_item_id
+            type: SNOWFLAKE
+            props:
+              worker:
+                id: 123
