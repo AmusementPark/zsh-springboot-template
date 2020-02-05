@@ -1,0 +1,126 @@
+version: "3"
+services:
+  mysql_master:
+    image: mysql:5.7
+    container_name: mysql_master
+    ports:
+      - 3306:3306
+    volumes:
+      #- ../../volume/mysql-replica/mdata:/var/lib/mysql
+      - mysqldm.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
+      - minit:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: aq1sw2de
+#      MYSQL_DATABASE: WMG
+#      MYSQL_USER: zsh
+#      MYSQL_PASSWORD: mima
+    restart: unless-stopped
+    # hostname: master
+    # networks:
+    #   - mysql-cluster
+    networks:
+      mysql-cluster:
+        ipv4_address: 172.16.238.3
+
+  mysql_slave0:
+    image: mysql:5.7
+    container_name: mysql_slave0
+    ports:
+      - 3307:3306
+    volumes:
+      #- ../../volume/mysql-replica/s0data:/var/lib/mysql
+      - mysqlds.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
+      - sinit:/docker-entrypoint-initdb.d
+    environment:
+      MYSQL_ROOT_PASSWORD: aq1sw2de
+#      MYSQL_DATABASE: WMG
+#      MYSQL_USER: zsh
+#      MYSQL_PASSWORD: mima
+    restart: unless-stopped
+    # hostname: slave0
+    # networks:
+    #   - mysql-cluster
+    networks:
+      mysql-cluster:
+        ipv4_address: 172.16.238.4
+
+networks:
+  mysql-cluster:
+    driver: bridge
+    ipam: # 要使用静态ip必须使用ipam插件
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+          # gateway: 172.16.238.1
+
+
+# version: '3' # 这个version是指dockerfile解析时用的版本,不是给我们自己定义版本号用的.
+# services:
+# ###########################################################################
+#   m1: # master
+#     # build: ./build/m # ./master文件下需要有Dockerfile文件,并且build属性和image属性不能一起使用
+#     container_name: m1 # 容器名
+#     volumes: # 挂载 下边每行前边的`-`代表这个东西是数组的一个元素.就是说volumes属性的值是一个数组
+#       - ../../volume/mysql-replica/m/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf # 注意改下映射关系
+#       - ../../volume/mysql-replica/hosts:/etc/hosts # 注意改下映射关系
+#       # - ./data/m:/var/lib/mysql #数据路径
+#     networks: # 网络
+#       mysql: # 见跟services平级的networks,在最下边
+#         ipv4_address: 172.16.238.2 # 设置静态ipv4的地址
+#     # ulimits: # 操作系统限制
+#     #   nproc: 65535
+#     hostname: m1 # hostname
+#     #mem_limit: 1024m # 最大内存使用不超过1024m,我在本地机器上测试,才只写了1024m,生产上需要根据自己的服务器配置,以及docker容器数进行调优.
+#     restart: unless-stopped # 容器重启策略
+#     environment: # 设置环境变量
+#       MYSQL_ROOT_PASSWORD: aq1sw2de
+#     ports:
+#       - "3306:3306"
+# ###########################################################################
+#   s1: # slave1
+#     # build: ./build/s
+#     container_name: s1
+#     volumes:
+#       - ../../volume/mysql-replica/s0/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf # 注意改下映射关系
+#       - ../../volume/mysql-replica/hosts:/etc/hosts # 注意改下映射关系
+#     # - ./data/s1:/var/lib/mysql #数据路径
+#     networks:
+#       mysql:
+#         ipv4_address: 172.16.238.3
+#     links:
+#       - m1
+#     # ulimits:
+#     #   nproc: 65535
+#     hostname: s1
+#     #mem_limit: 1024m
+#     restart: unless-stopped
+#     environment:
+#       MYSQL_ROOT_PASSWORD: aq1sw2de
+# ###########################################################################
+#   # s2: # slave2
+#   #   build: ./build/s
+#   #   container_name: s2
+#   #   volumes:
+#   #     - ./config/s2/:/etc/mysql/conf.d # 注意改下映射关系
+#   #     - ./config/hosts:/etc/hosts # 注意改下映射关系
+#   #     - ./data/s2:/var/lib/mysql #数据路径
+#   #   links:
+#   #     - m1
+#   #   networks:
+#   #     mysql:
+#   #       ipv4_address: 172.16.238.4
+#   #   ulimits:
+#   #     nproc: 65535
+#   #   hostname: s2
+#   #   mem_limit: 1024m
+#   #   restart: always
+#   #   environment:
+#   #     MYSQL_ROOT_PASSWORD: s2test
+# networks: # docker网络设置
+#   mysql: # 自定义网络名称
+#     driver: bridge # 桥接
+#     ipam: # 要使用静态ip必须使用ipam插件
+#       driver: default
+#       config:
+#         - subnet: 172.16.238.0/24
+#         - gateway: 172.16.238.1
