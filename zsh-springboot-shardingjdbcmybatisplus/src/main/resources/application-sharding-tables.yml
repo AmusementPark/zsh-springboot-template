@@ -1,23 +1,23 @@
 spring:
   shardingsphere:
     datasource:
-      names: ds0
-      ds0:
+      names: ds
+      ds:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://106.54.211.146:33006/demo_ds_0?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        jdbc-url: jdbc:mysql://106.54.211.146:3307/ds_0?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
         username: root
-        password: mima
+        password: aq1sw2de
     sharding:
-      default-database-strategy:
-        inline:
-          algorithm-expression: ds0->{user_id % 2}
-          sharding-column: user_id
       binding-tables: t_order, t_order_item
       broadcast-tables: t_address
       tables:
         t_order:
-          actual-data-nodes: ds0->t_order
+          actual-data-nodes: ds.t_order_$->{0..1}
+          table-strategy:
+            inline:
+              sharding-column: order_id
+              algorithm-expression: t_order_$->{order_id % 2}
           key-generator:
             column: order_id
             type: SNOWFLAKE
@@ -25,7 +25,11 @@ spring:
               worker:
                 id: 123
         t_order_item:
-          actual-data-nodes: ds_$->{0..1}.t_order_item
+          actual-data-nodes: ds.t_order_item_$->{0..1}
+          table-strategy:
+            inline:
+              sharding-column: order_id
+              algorithm-expression: t_order_item_$->{order_id % 2}
           key-generator:
             column: order_item_id
             type: SNOWFLAKE

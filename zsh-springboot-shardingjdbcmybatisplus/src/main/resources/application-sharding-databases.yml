@@ -10,15 +10,15 @@ spring:
       ds0:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://106.54.211.146:33006/ds_0?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        jdbc-url: jdbc:mysql://106.54.211.146:3307/ds_0?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
         username: root
-        password: mima
+        password: aq1sw2de
       ds1:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.jdbc.Driver
-        jdbc-url: jdbc:mysql://106.54.211.146:33006/ds_1?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        jdbc-url: jdbc:mysql://106.54.211.146:3307/ds_1?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
         username: root
-        password: mima
+        password: aq1sw2de
     sharding:
       default-database-strategy:
         inline:

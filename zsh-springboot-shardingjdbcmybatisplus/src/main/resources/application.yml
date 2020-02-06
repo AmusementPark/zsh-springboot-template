@@ -1,5 +1,5 @@
 spring:
   profiles:
-    active: sharding-databases
+    active: master-slave
 mybatis-plus:
   mapper-locations: classpath*:zsh/springboot/shardingjdbcmybatisplus/ds/mapper/**/*Mapper.xml

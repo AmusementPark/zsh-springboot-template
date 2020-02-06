@@ -1,3 +1,4 @@
+# 主从模式mysql，用来测试读写分离
 version: "3"
 services:
   mysql_master:
@@ -7,10 +8,10 @@ services:
       - 3306:3306
     volumes:
       #- ../../volume/mysql-replica/mdata:/var/lib/mysql
-      - mysqldm.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
-      - minit:/docker-entrypoint-initdb.d
+      - ./confm/mysqld.cnf:/etc/mysql/mysql.confs.d/mysqld.cnf
+      - ./minit:/docker-entrypoint-initdb.d
     environment:
-      MYSQL_ROOT_PASSWORD: aq1sw2de
+      MYSQL_ROOT_PASSWORD: mima
 #      MYSQL_DATABASE: WMG
 #      MYSQL_USER: zsh
 #      MYSQL_PASSWORD: mima
@@ -29,10 +30,10 @@ services:
       - 3307:3306
     volumes:
       #- ../../volume/mysql-replica/s0data:/var/lib/mysql
-      - mysqlds.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
-      - sinit:/docker-entrypoint-initdb.d
+      - ./confs/mysqld.cnf:/etc/mysql/mysql.confs.d/mysqld.cnf
+      - ./sinit:/docker-entrypoint-initdb.d
     environment:
-      MYSQL_ROOT_PASSWORD: aq1sw2de
+      MYSQL_ROOT_PASSWORD: mima
 #      MYSQL_DATABASE: WMG
 #      MYSQL_USER: zsh
 #      MYSQL_PASSWORD: mima
@@ -61,7 +62,7 @@ networks:
 #     # build: ./build/m # ./master文件下需要有Dockerfile文件,并且build属性和image属性不能一起使用
 #     container_name: m1 # 容器名
 #     volumes: # 挂载 下边每行前边的`-`代表这个东西是数组的一个元素.就是说volumes属性的值是一个数组
-#       - ../../volume/mysql-replica/m/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf # 注意改下映射关系
+#       - ../../volume/mysql-replica/m/mysqld.cnf:/etc/mysql/mysql.confs.d/mysqld.cnf # 注意改下映射关系
 #       - ../../volume/mysql-replica/hosts:/etc/hosts # 注意改下映射关系
 #       # - ./data/m:/var/lib/mysql #数据路径
 #     networks: # 网络
@@ -81,7 +82,7 @@ networks:
 #     # build: ./build/s
 #     container_name: s1
 #     volumes:
-#       - ../../volume/mysql-replica/s0/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf # 注意改下映射关系
+#       - ../../volume/mysql-replica/s0/mysqld.cnf:/etc/mysql/mysql.confs.d/mysqld.cnf # 注意改下映射关系
 #       - ../../volume/mysql-replica/hosts:/etc/hosts # 注意改下映射关系
 #     # - ./data/s1:/var/lib/mysql #数据路径
 #     networks:
@@ -101,7 +102,7 @@ networks:
 #   #   build: ./build/s
 #   #   container_name: s2
 #   #   volumes:
-#   #     - ./config/s2/:/etc/mysql/conf.d # 注意改下映射关系
+#   #     - ./config/s2/:/etc/mysql/confs.d # 注意改下映射关系
 #   #     - ./config/hosts:/etc/hosts # 注意改下映射关系
 #   #     - ./data/s2:/var/lib/mysql #数据路径
 #   #   links:

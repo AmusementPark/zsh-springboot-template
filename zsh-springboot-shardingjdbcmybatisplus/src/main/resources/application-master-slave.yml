@@ -1,0 +1,26 @@
+##
+# sharding-jdbc代理方式为将多个datasource封装成为一个
+# org.apache.shardingsphere.shardingjdbc.jdbc.adapter.AbstractDataSourceAdapter
+# 对于mybatis-plus来讲就是一个单一的datasource，因此可以使用mybatis-plus的auto-configuration的sqlSessionFactory配置
+##
+spring:
+  shardingsphere:
+    datasource:
+      names: dsmaster, dsslave0
+      dsmaster:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://106.54.211.146:3306/ds?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        username: zsh
+        password: mima
+      dsslave0:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.jdbc.Driver
+        jdbc-url: jdbc:mysql://106.54.211.146:3307/ds?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+        username: zsh
+        password: mima
+    masterslave:
+      load-balance-algorithm-type: round_robin
+      name: ds_ms
+      master-data-source-name: dsmaster
+      slave-data-source-names: dsslave0
