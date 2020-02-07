@@ -4,6 +4,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
 import zsh.springboot.shardingjdbcmybatisplus.ds.model.TOrder;
 import zsh.springboot.shardingjdbcmybatisplus.ds.model.TOrderItem;
@@ -31,8 +32,10 @@ public class ShardingJdbcMybatisPlusApplication {
 
     @Transactional(rollbackFor = Throwable.class)
     public void insert() {
-        List<Long> result = new ArrayList<>(10);
-        for (int i = 1; i <= 10; i++) {
+        List<TOrder> orderList = tOrderService.list();
+        System.out.println(orderList);
+        List<Long> result = new ArrayList<>(2);
+        for (int i = 1; i <= 2; i++) {
             TOrder order = new TOrder();
             order.setUserId(i);
             order.setAddressId(Long.valueOf(i));
@@ -45,6 +48,8 @@ public class ShardingJdbcMybatisPlusApplication {
             tOrderItemService.save(item);
             result.add(order.getOrderId());
         }
+        List<TOrder> list = tOrderService.list();
+        System.out.println(list);
     }
 
     public void select() {
