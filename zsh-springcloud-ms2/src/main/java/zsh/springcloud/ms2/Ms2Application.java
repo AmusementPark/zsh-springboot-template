@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class Ms2Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(Ms2Application.class, args);
+        Ms2Application ms2Application = SpringApplication.run(Ms2Application.class, args).getBean(Ms2Application.class);
     }
 
     @RequestMapping("get")
