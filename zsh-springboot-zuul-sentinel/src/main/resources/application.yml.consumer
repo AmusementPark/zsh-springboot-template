@@ -1,0 +1,138 @@
+server:
+  port: 9800
+spring:
+  application:
+    name: zsh-nacos-experimental
+  cloud:
+    sentinel:
+      zuul:
+        order:
+          pre: 1000
+          post: 1000
+          error: -1
+      transport:
+        dashboard: 172.22.122.21:9600
+#--------------------------------------------------------------------
+      datasource:
+        #限流参数
+        ds1:
+          nacos:
+#            private String serverAddr;
+#            private String groupId = "DEFAULT_GROUP";
+#            private String dataId;
+#            private String endpoint;
+#            private String namespace;
+#            private String accessKey;
+#            private String secretKey;
+#            private String dataType = "json";
+#            private RuleType ruleType;
+#              FLOW("flow", FlowRule.class),
+#              DEGRADE("degrade", DegradeRule.class),
+#              PARAM_FLOW("param-flow", ParamFlowRule.class),
+#              SYSTEM("system", SystemRule.class),
+#              AUTHORITY("authority", AuthorityRule.class),
+#              GW_FLOW("gw-flow", "com.alibaba.csp.sentinel.adapter.gateway.common.rule.GatewayFlowRule"),
+#              GW_API_GROUP("gw-api-group", "com.alibaba.csp.sentinel.adapter.gateway.common.api.ApiDefinition");
+#            private String converterClass;
+            server-addr: ${spring.cloud.nacos.config.server-addr}
+            dataId: ${spring.application.name}-sentinel-gw-flow
+            groupId: DEFAULT_GROUP
+            rule-type: gw-flow          #固定类型
+        #API代理列表
+        ds2:
+          nacos:
+            server-addr: ${spring.cloud.nacos.config.server-addr}
+            dataId: ${spring.application.name}-sentinel-gw-api-group
+            groupId: DEFAULT_GROUP
+            rule-type: gw-api-group     #固定类型
+        #降级参数
+        ds3:
+          nacos:
+            server-addr: ${spring.cloud.nacos.config.server-addr}
+            dataId: ${spring.application.name}-sentinel-degrade
+            groupId: zsh-sentinel-template
+            rule-type: degrade          #固定类型
+        #接口限流参数
+        ds4:
+          nacos:
+            server-addr: ${spring.cloud.nacos.config.server-addr}
+            dataId: ${spring.application.name}-sentinel-flow
+            groupId: zsh-sentinel-template
+            rule-type: flow             #固定类型
+#--------------------------------------------------------------------
+zuul:
+  host:
+    socket-timeout-millis:  20000 #Socket超时
+    connect-timeout-millis: 20000 #HTTP超时
+  strip-prefix: true
+  add-host-header: true
+  # 路由参数
+  routes:
+    zsh-example-service:
+      path: /get/**
+      service-id: zsh-nacos-producer
+    zsh-another-service:
+      path: /ano/**
+      service-id: zsh-nacos-producer
+    zsh-config-service:
+      path: /adm/**
+      service-id: zsh-nacos-producer
+    zsh-exception-service:
+      path: /exp/**
+      service-id: zsh-nacos-producer
+#--------------------------------------------------------------------
+#下游服务负载均衡超时配置
+zsh-nacos-producer:
+  ribbon:
+    ReadTimeout: 4000
+    ConnectTimeout: 2000
+#    MaxAutoRetries: 0
+#    MaxAutoRetriesNextServer: 0  #默认寻找下一个负载服务重试一次
+hystrix:
+  metrics:
+    enabled: false
+  command:
+    #default: #默认为default全局生效
+    zsh-nacos-producer:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3000
+#--------------------------------------------------------------------
+feign:
+  sentinel:
+    enabled: true
+#logging:
+#  level:
+#    root: DEBUG
+#  file:
+#    path: info.log
+
+#zuul:
+#  routes:
+#    echo:
+#      path: /myusers/**
+#      serviceId: myusers-service
+#      stripPrefix: true
+#
+#hystrix:
+#  command:
+#    myusers-service:
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: ...ge
+#
+#myusers-service:
+#  ribbon:
+#    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+#    listOfServers: https://example1.com,http://example2.com
+#    ConnectTimeout: 1000
+#    ReadTimeout: 3000
+#    MaxTotalHttpConnections: 500
+#    MaxConnectionsPerHost: 100
+zsh:
+  springboot:
+    template:
+      custom:
+        key : val
