@@ -8,6 +8,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.Acknowledgment;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.concurrent.ExecutionException;
 
 @Slf4j
+@EnableKafka
 @RestController
 @RequestMapping("")
 @SpringBootApplication
@@ -26,7 +28,7 @@ public class KafkaApplication {
 
     public static void main(String[] args) {
         KafkaApplication kafkaApplication = SpringApplication.run(KafkaApplication.class, args).getBean(KafkaApplication.class);
-//        kafkaApplication.producer();
+        kafkaApplication.producer();
     }
 
     @Autowired

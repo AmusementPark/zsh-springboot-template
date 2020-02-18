@@ -1,40 +1,46 @@
+server:
+  port: 8099
 spring:
   kafka:
     batch: true
     pollTimeOut: 6000
     concurrency: 1
-#    bootstrap-servers: 106.54.211.146:9092
     bootstrap-servers: 172.22.122.23:9092
-    #    bootstrap-servers: 10.86.74.121:9092,10.86.74.122:9092,10.86.74.123:9092
+#    bootstrap-servers: 10.86.74.121:9092,10.86.74.122:9092,10.86.74.123:9092
     producer:
       retries: 3
-      # ÿ������������Ϣ������
       batch-size: 16384
       buffer-memory:  33554432
-      # ָ����Ϣkey����Ϣ��ı���뷽ʽ
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
-      # ָ��Ĭ��������group id
-      # �������size:30M - 31457280
-      max-request-size: 1048576
-      # ֧�� gzip,snappy,lz4. consumer�Զ�֧�ֽ�ѹ,����Ҫ����
+#      max-request-size: 1048576
       compression-type: gzip
+      properties:
+        max:
+          request:
+            size: 1048576
+        acks: all
+        enable:
+          idempotence: true
     consumer:
       #      group-id: ros-consumer-group
       auto-offset-reset:  earliest
       enable-auto-commit: false
       auto-commit-interval: 3000
       max-poll-records: 50
-      # ���ȡ����size: 30M Ӧ�õ�ͬ�� producer.max-request-size
-      fetch-max-bytes: 1048576
-      # ���poll���;Ĭ���� 300,000 ����,�����Ϊ 600,000 ���� = 600��,��Ҫ��DID��DTC����ȽϺ�ʱ
-      max-poll-interval-ms: 600000
+#      fetch-max-bytes: 1048576
+#      max-poll-interval-ms: 600000?
       properties:
+        fetch:
+          max:
+            bytes: 1048576
         max:
+          poll:
+            interval:
+              ms: 600000
           partition:
             fetch:
               bytes: 2097152
-      # ָ����Ϣkey����Ϣ��ı���뷽ʽ
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
