@@ -1,15 +1,19 @@
 package zsh.springboot.reactiveweb;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
 import zsh.springboot.reactiveweb.vo.LoginVo;
+import zsh.springboot.reactiveweb.vo.WrappedLoginVo;
 
 @RestController
 @SpringBootApplication
+@MapperScan(value = "zsh.springboot.reactiveweb.ds0.dao*")
 public class ReactiveWebApplication {
 
     public static void main(String[] args) {
@@ -19,7 +23,8 @@ public class ReactiveWebApplication {
 
     @PutMapping("api")
     @UserActionLogger(module = "zsh-springboot-aspect", userSessionFetchAdapter=AuthorizationFetchAdapter.class)
-    public String controller(@RequestBody LoginVo loginVo, LoginVo ano) {
+    public String controller(@RequestBody LoginVo loginVo, @RequestAttribute("WRAPPED_LOGIN_VO") WrappedLoginVo wrappedLoginVo, ServerWebExchange exchange) {
+        System.out.println(wrappedLoginVo);
         return "FINISH";
     }
 

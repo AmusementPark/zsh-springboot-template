@@ -1,7 +1,10 @@
 server:
   port: 9912
 spring:
-  security:
-    user:
-      password: 1234
-      name: AA
+  datasource:
+    password: mima
+    username: root
+    url: jdbc:mysql://106.54.211.146:3306/ds_0?characterEncoding=utf8&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+mybatis-plus:
+  mapper-locations: classpath*:zsh/springboot/reactiveweb/ds0/mapper/**/*Mapper.xml

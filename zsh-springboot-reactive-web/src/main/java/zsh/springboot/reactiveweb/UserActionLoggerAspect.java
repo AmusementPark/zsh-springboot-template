@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.server.adapter.DefaultServerWebExchange;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
@@ -172,8 +170,4 @@ public class UserActionLoggerAspect {
         return userActionLogger.userSessionFetchAdapter();
     }
 
-    private void publishEvent(ServerHttpRequest request) {
-        // 具体业务逻辑
-        System.out.println("213");
-    }
 }

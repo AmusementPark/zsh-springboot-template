@@ -177,10 +177,4 @@ public class UserActionLoggerAspectReactor {
         return new Object();
     }
 
-    private void publishEvent(ServerHttpRequest request) {
-        // 具体业务逻辑
-        System.out.println("213");
-    }
-
-
 }
