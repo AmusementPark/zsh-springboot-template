@@ -1,11 +1,13 @@
 package zsh.springboot.mybatisplus.config;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 
 @Profile("join-ds")
 @Configuration
+@MapperScan(value = "zsh.springboot.mybatisplus.joinds.dao*")
 public class MybatisPlusJoinDsConfig {
 
     /**

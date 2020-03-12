@@ -1,6 +1,7 @@
 package zsh.springboot.mybatisplus.ds1.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import zsh.springboot.mybatisplus.ds1.dao.ShareDao;
@@ -15,6 +16,7 @@ import zsh.springboot.mybatisplus.ds1.service.ShareService;
  * @author ${author}
  * @since 2019-12-06
  */
+@Profile("multi-ds")
 @Service
 public class ShareServiceImpl extends ServiceImpl<ShareDao, Share> implements ShareService {
 

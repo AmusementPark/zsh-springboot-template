@@ -1,20 +1,12 @@
-server:
-  port: 8080
-
 spring:
-  devtools:
-    restart:
-      enabled: false
-
   datasource:
-    password: mima
+    password: aq1sw2de
     username: root
-    url: jdbc:mysql://106.54.211.146:3306/warmgoal?characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://172.22.122.23:3308/join_ds?characterEncoding=utf8&useSSL=false
     driver-class-name: com.mysql.jdbc.Driver
-
 mybatis-plus:
 # 单数据源
-  mapper-locations: classpath:/mapper/ds_0/*Mapper.xml
+  mapper-locations: classpath*:zsh/springboot/mybatisplus/joinds/mapper/**/*Mapper.xml
 #############################################################################################
 
 #mybatis

@@ -2,8 +2,10 @@ package zsh.springboot.mybatisplus.config;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+@Profile("multi-ds")
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
 @MapperScan(value = "zsh.springboot.mybatisplus.ds0.dao*", sqlSessionFactoryRef = "ds0SqlSessionFactory")

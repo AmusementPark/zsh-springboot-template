@@ -1,5 +1,6 @@
 package zsh.springboot.mybatisplus.ds0.service.impl;
 
+import org.springframework.context.annotation.Profile;
 import zsh.springboot.mybatisplus.ds0.model.ShareHolder;
 import zsh.springboot.mybatisplus.ds0.dao.ShareHolderDao;
 import zsh.springboot.mybatisplus.ds0.service.ShareHolderService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
  * @author ${author}
  * @since 2019-12-06
  */
+@Profile("multi-ds")
 @Service
 public class ShareHolderServiceImpl extends ServiceImpl<ShareHolderDao, ShareHolder> implements ShareHolderService {
 

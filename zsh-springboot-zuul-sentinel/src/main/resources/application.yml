@@ -20,8 +20,8 @@ zuul:
   # 路由参数
   routes:
     zsh-example-service:
-      path: /redirect/**
-      service-id: ms2
+      path: /rrr/**
+      service-id: zsh-nacos-producer
       # zuul默认会过滤以下header，因此设置一个不会使用的header覆盖默认设置，确保敏感Header可以传递到下一个服务
       # Authorization、Set-Cookie、Cookie、Host、Connection、Content-Length、Content-Encoding、Server、Transfer-Encoding、X-Application-Context
       sensitive-headers: Not-Existing-Header

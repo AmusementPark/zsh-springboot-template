@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zsh.springboot.mybatisplus.joinds.dao.JoinMainDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="zsh.springboot.mybatisplus.joinds.model.JoinMain">
+        <id column="id" property="id" />
+        <result column="join_t1_id" property="joinT1Id" />
+        <result column="join_t2_id" property="joinT2Id" />
+        <result column="join_t3_id" property="joinT3Id" />
+        <result column="join_t4_id" property="joinT4Id" />
+        <result column="join_main_name" property="joinMainName" />
+        <result column="join_main_desc" property="joinMainDesc" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+</mapper>

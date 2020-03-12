@@ -5,4 +5,4 @@ spring:
     restart:
       enabled: false
   profiles:
-    active: multi-ds
+    active: join-ds
