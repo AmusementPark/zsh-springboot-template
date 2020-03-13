@@ -3,8 +3,8 @@ package zsh.springboot.mybatisplus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import zsh.springboot.mybatisplus.ds0.service.ShareHolderService;
-import zsh.springboot.mybatisplus.ds1.service.ShareService;
+import zsh.springboot.mybatisplus.multids.ds0.service.ShareHolderService;
+import zsh.springboot.mybatisplus.multids.ds1.service.ShareService;
 import zsh.springboot.mybatisplus.joinds.JoinDsService;
 
 @SpringBootApplication
