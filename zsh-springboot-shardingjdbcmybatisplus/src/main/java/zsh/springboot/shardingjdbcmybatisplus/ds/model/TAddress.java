@@ -26,12 +26,11 @@ public class TAddress extends Model<TAddress> {
 
     private static final long serialVersionUID=1L;
 
-      @TableId(value = "address_id", type = IdType.ASSIGN_ID)
+    @TableId(value = "address_id", type = IdType.ASSIGN_ID)
     private Long addressId;
 
     @TableField("address_name")
     private String addressName;
-
 
     @Override
     protected Serializable pkVal() {

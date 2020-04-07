@@ -16,5 +16,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TUserServiceImpl extends ServiceImpl<TUserDao, TUser> implements TUserService {
-
+    @Override
+    public void truncate() {
+        this.baseMapper.truncate();
+    }
 }

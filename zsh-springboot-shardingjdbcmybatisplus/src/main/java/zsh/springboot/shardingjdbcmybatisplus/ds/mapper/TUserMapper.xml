@@ -11,4 +11,8 @@
         <result column="assisted_query_pwd" property="assistedQueryPwd" />
     </resultMap>
 
+    <update id="truncate">
+        TRUNCATE TABLE t_user;
+    </update>
+
 </mapper>

@@ -26,7 +26,7 @@ public class TUser extends Model<TUser> {
 
     private static final long serialVersionUID=1L;
 
-      @TableId(value = "user_id", type = IdType.AUTO)
+    @TableId(value = "user_id", type = IdType.AUTO)
     private Integer userId;
 
     @TableField("user_name")
@@ -40,7 +40,6 @@ public class TUser extends Model<TUser> {
 
     @TableField("assisted_query_pwd")
     private String assistedQueryPwd;
-
 
     @Override
     protected Serializable pkVal() {

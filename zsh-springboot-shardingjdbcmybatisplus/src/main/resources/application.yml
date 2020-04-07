@@ -1,5 +1,7 @@
 spring:
   profiles:
-    active: master-slave
+    active: sharding-tables-precise-algorithm
 mybatis-plus:
   mapper-locations: classpath*:zsh/springboot/shardingjdbcmybatisplus/ds/mapper/**/*Mapper.xml
+  configuration:
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
