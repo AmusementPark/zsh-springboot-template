@@ -10,6 +10,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
@@ -17,6 +19,7 @@ import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import zsh.springboot.logs.autoconfigure.ZshLoggerProperties;
 import zsh.springboot.logs.model.ZshSystemLoggerModel;
 
 import java.lang.annotation.Annotation;
@@ -25,13 +28,18 @@ import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
 @Slf4j
 @Aspect
 @Component
-public class ZshSystemLoggerAspect {
+public class ZshSystemLoggerAspect implements InitializingBean {
+
+    @Autowired
+    private ZshLoggerProperties zshLoggerProperties;
+    private Set<Class<?>> excludePrintClass;
 
     //    @Pointcut("execution(* com.zsh.ros.*.*.*.*Controller.*(..))")
 //    @Pointcut("execution(* com.zsh.ros.*.*.*.*Controller.*(..)) || execution(* com.zsh.ros.*.*.*.*Service.*(..))")
@@ -172,13 +180,15 @@ public class ZshSystemLoggerAspect {
         Object[] args = pjp.getArgs();
 
         List<String> argumentAsStringList = Arrays.stream(args)
-                .map(toBePrint -> {
-                    try {
-                        return JSON.toJSONString(toBePrint);
-                    } catch (Exception e) {
-                        return "";
-                    }
+                .filter(arg -> {
+                    Set<Class<?>> filter = excludePrintClass.stream()
+                            .filter(clazz -> {
+                                return clazz.isAssignableFrom(arg.getClass());
+                            })
+                            .collect(Collectors.toSet());
+                    return filter.isEmpty();
                 })
+                .map(JSON::toJSONString)
                 .filter(StringUtils::isNotEmpty)
                 .collect(Collectors.toList());
         if (args.length != 0) {
@@ -217,4 +227,17 @@ public class ZshSystemLoggerAspect {
         }
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        excludePrintClass = zshLoggerProperties.getExcludePrintClass().stream()
+                .map(str -> {
+                    try {
+                        return Class.forName(str);
+                    } catch (ClassNotFoundException e) {
+                        return null;
+                    }
+                })
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+    }
 }
