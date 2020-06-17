@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2020-02-05
  */
 public interface TUserDao extends BaseMapper<TUser> {
-
+    void truncate();
 }

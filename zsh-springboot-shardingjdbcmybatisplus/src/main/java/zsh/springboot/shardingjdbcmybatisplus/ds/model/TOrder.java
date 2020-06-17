@@ -38,7 +38,6 @@ public class TOrder extends Model<TOrder> {
     @TableField("status")
     private String status;
 
-
     @Override
     protected Serializable pkVal() {
         return this.orderId;

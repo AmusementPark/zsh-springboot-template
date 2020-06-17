@@ -12,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-02-05
  */
 public interface TUserService extends IService<TUser> {
-
+    void truncate();
 }

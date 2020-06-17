@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  zsh.springboot.logs.autoconfigure.StreamLoggerStreamKafkaAutoConfiguration,\
+  zsh.springboot.logs.autoconfigure.StreamLoggerAutoConfiguration,\
+  zsh.springboot.logs.autoconfigure.SystemLoggerAutoConfiguration

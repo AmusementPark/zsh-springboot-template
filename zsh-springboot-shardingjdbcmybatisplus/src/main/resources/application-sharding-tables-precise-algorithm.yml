@@ -15,9 +15,13 @@ spring:
         t_order:
           actual-data-nodes: ds.t_order_$->{0..1}
           table-strategy:
-            inline:
+            standard:
               sharding-column: order_id
-              algorithm-expression: t_order_$->{order_id % 2}
+              precise-algorithm-class-name: zsh.springboot.shardingjdbcmybatisplus.sharding.PreciseShardingTableAlgorithmImpl
+              range-algorithm-class-name: zsh.springboot.shardingjdbcmybatisplus.sharding.RangeShardingTableAlgorithmImpl
+#            range:
+#              sharding-column: order_id
+#              range-algorithm-class-name: zsh.springboot.shardingjdbcmybatisplus.sharding.RangeShardingTableAlgorithmImpl
           key-generator:
             column: order_id
             type: SNOWFLAKE
@@ -27,9 +31,13 @@ spring:
         t_order_item:
           actual-data-nodes: ds.t_order_item_$->{0..1}
           table-strategy:
-            inline:
+            standard:
               sharding-column: order_id
-              algorithm-expression: t_order_item_$->{order_id % 2}
+              precise-algorithm-class-name: zsh.springboot.shardingjdbcmybatisplus.sharding.PreciseShardingTableAlgorithmImpl
+              range-algorithm-class-name: zsh.springboot.shardingjdbcmybatisplus.sharding.RangeShardingTableAlgorithmImpl
+#            range:
+#              sharding-column: order_id
+#              range-algorithm-class-name: zsh.springboot.shardingjdbcmybatisplus.sharding.RangeShardingTableAlgorithmImpl
           key-generator:
             column: order_item_id
             type: SNOWFLAKE

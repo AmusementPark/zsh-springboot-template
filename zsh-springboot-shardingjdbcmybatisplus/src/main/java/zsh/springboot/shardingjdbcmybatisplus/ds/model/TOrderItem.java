@@ -26,7 +26,7 @@ public class TOrderItem extends Model<TOrderItem> {
 
     private static final long serialVersionUID=1L;
 
-      @TableId(value = "order_item_id", type = IdType.AUTO)
+    @TableId(value = "order_item_id", type = IdType.AUTO)
     private Long orderItemId;
 
     @TableField("order_id")
@@ -37,7 +37,6 @@ public class TOrderItem extends Model<TOrderItem> {
 
     @TableField("status")
     private String status;
-
 
     @Override
     protected Serializable pkVal() {
